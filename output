@@ -1,0 +1,61 @@
+Моделирование работы диспетчерской (ООП)
+Fedor Polushkin M70-107C-21
+В моделировании участвовали два типа летательных аппаратов: самолеты и вертолеты. Координаты
+аэродрома, а так же количество самолетов задано заранее, так же программе на вход подается t0 и tk
+Набор лететальных аппаратов создается при помощи рандомной генерации. Так в нашем конкретном случае 
+система сгенерировала следующие стартовые условия: 
+1: 13099 17619 652  its Aircraft
+2: 11356 11418 313  its Helicopter
+3: 11621 17397 310  its Helicopter
+4: 11357 17751 824  its Aircraft
+5: 17383 18222 647  its Aircraft
+6: 15581 10299 318  its Helicopter
+7: 14260 10667 865  its Aircraft
+8: 18889 16351 617  its Aircraft
+9: 12007 10001 317  its Helicopter
+10: 10322 15109 341  its Helicopter
+11: 19333 11633 338  its Helicopter
+12: 18170 19382 310  its Helicopter
+13: 12537 11996 305  its Helicopter
+14: 11860 10078 744  its Aircraft
+15: 11125 10035 697  its Aircraft
+16: 16451 13574 310  its Helicopter
+
+Координаты аэродрома(15000;15000) константы dt равняется 0.01
+
+После выполнения работы программы все ЛА оказываются в окрестности аэропорта +- погрешность равная
+скорости конкретного летательного аппарата умноженная на заданнаю константу dt
+1: 14997.5 15004.4 652 
+2: 14997.1 14997 313 
+3: 14998.8 15000.8 310 
+4: 14991.8 15002.7 824 
+5: 14997.3 15005.3 647 
+6: 15000.8 14998.7 318 
+7: 14998.7 15005.5 865 
+8: 14998.4 15005 617 
+9: 14997.5 14997.1 317 
+10: 14999.4 15000.5 341 
+11: 15002.4 14999.5 338 
+12: 15001.4 15001.6 310 
+13: 14998.5 14998.2 305 
+14: 14995 15004.4 744 
+15: 14995.5 15005.2 697 
+16: 15002.8 14997.2 310 
+
+ответом к врианту 1 являются следующие данные:
+TLA number 16 landed by number 1 and its Helicopter
+TLA number 4 landed by number 2 and its Aircraft
+TLA number 13 landed by number 3 and its Helicopter
+TLA number 3 landed by number 4 and its Helicopter
+TLA number 10 landed by number 5 and its Helicopter
+TLA number 6 landed by number 6 and its Helicopter
+TLA number 11 landed by number 7 and its Helicopter
+TLA number 2 landed by number 8 and its Helicopter
+TLA number 12 landed by number 9 and its Helicopter
+TLA number 9 landed by number 10 and its Helicopter
+TLA number 7 landed by number 11 and its Aircraft
+TLA number 1 landed by number 12 and its Aircraft
+TLA number 14 landed by number 13 and its Aircraft
+TLA number 5 landed by number 14 and its Aircraft
+TLA number 8 landed by number 15 and its Aircraft
+TLA number 15 landed by number 16 and its Aircraft
