@@ -3,7 +3,7 @@
 
 TAObject::TAObject() {}
 TAObject::~TAObject() {
-    delete this;
+
 }
 TAObject::TAObject(float x, float y) {
     this->x=x;
