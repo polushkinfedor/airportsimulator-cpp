@@ -7,8 +7,7 @@
 
 using namespace std;
 const int K = 16;
-const float pi = 3.14;
-const float dt = 0.01;
+const float dt = 0.1;
 
 class TAObject {
 public:
@@ -45,5 +44,5 @@ public:
     TLA** LA;
     TAirport(float x, float y, float l);
     void Do (float t0, float tk);
-    void show(char* a, int* b, float* L1, float* L2, float* L3);
+    void show(char* a, int* b, float* L1, float* L2, float* L3, float* LA_land_end);
 };

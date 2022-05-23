@@ -63,7 +63,7 @@ TAirport::TAirport(float x, float y, float l): TAObject(x, y) {
     }
 }
 
-void TAirport::show(char* a, int* b, float* L1, float* L2, float* L3) {
+void TAirport::show(char* a, int* b, float* L1, float* L2, float* L3, float* LA_land_end) {
     fstream HEREANSWER;
     HEREANSWER.open("/Users/fedor/CLionProjects/AhahAK47/cmake-build-debug/output");
     HEREANSWER << "Моделирование работы диспетчерской (ООП)" << endl;
@@ -95,71 +95,83 @@ void TAirport::show(char* a, int* b, float* L1, float* L2, float* L3) {
         else HEREANSWER << "Helicopter";
         HEREANSWER << endl;
     }
+    HEREANSWER << endl;
+    HEREANSWER << "ответом к варианту 2 являются следующие данные:" << endl;
+    for (int j(0); j < K; j++) {
+        HEREANSWER << "TLA number " << b[j] << " landed at " << LA_land_end[b[j]-1] << " and its ";
+        if (a[j] == 'a') HEREANSWER << "Aircraft";
+        else HEREANSWER << "Helicopter";
+    }
     HEREANSWER.close();
 }
 
 void TAirport::Do (float t0, float tk) {
+    float LA_landing_end[K];
+
     // КОД МЕЖДУ ЭТИМИ КОММЕНТАРИЯМИ НЕ НЕСЕТ СМЫСЛОВОЙ НАГРУЗКИ И ИСПОЛЬЗУЕТСЯ ДЛЯ КРАСИВОГО ВЫВОДА В SHOW()
-    float LA_data[K]; float LA_data2[K]; float LA_data3[K];
-    for (int i(0); i<K; i++) {
+    float LA_data[K];
+    float LA_data2[K];
+    float LA_data3[K];
+    for (int i(0); i < K; i++) {
+        LA_landing_end[i] = float(0); // А ВОТ ЭТО ПОЛЕЗНО НО ВЫНОСИТЬ В ОТДЕЛЬНЫЙ КОД НЕ ИМЕЕТ СМЫСЛА
         LA_data[i] = LA[i]->x;
         LA_data2[i] = LA[i]->y;
         LA_data3[i] = LA[i]->v;
     }
-    int A[K]; char N[K];
+    int A[K];
+    char N[K];
     // КОД МЕЖДУ ЭТИМИ КОММЕНТАРИЯМИ НЕ НЕСЕТ СМЫСЛОВОЙ НАГРУЗКИ И ИСПОЛЬЗУЕТСЯ ДЛЯ КРАСИВОГО ВЫВОДА В SHOW()
 
-    int a; int counter = 0;
-    float X = this->x+1.1*this->l;
-    for (float t(t0); t<tk; t+=dt) {
-        for (int i(0); i<K; i++) {
+    int a;
+    int counter = 0;
+    float X = this->x + 1.1 * this->l;
+    for (float t(t0); t < tk; t += dt) {
+        for (int i(0); i < K; i++) {
             if (LA[i]->landed) continue;
-            if (LA[i]->v > 450) {
-                if((not(this->f and not LA[i]->f))and(LA[i]->x<X)and(abs(LA[i]->y - this->y)<l/50)) a = 1;
+
+            if (LA[i]->v > 450) { // это самолёт
+                if ((not(this->f and not LA[i]->f)) and (LA[i]->x < X) and (abs(LA[i]->y - this->y) < l / 50)) a = 1;
                 else a = 0;
 
-                if((LA[i]->x > this->x + this->l) and LA[i]->f) {
+                if ((LA[i]->x > this->x + this->l) and LA[i]->f) {
                     LA[i]->landing = true;
-                }
-                else if(f==true) LA[i]->landing = false;
+                } else if (f == true) LA[i]->landing = false;
             }
-            else {
-                if(not(this->f and not(LA[i]->f))) a = 1;
+
+            else { // рутутутуту а это вертолёт
+                if (not(this->f and not(LA[i]->f))) a = 1;
                 else a = 0;
 
-                if((pow((LA[i]->x-this->x),2)+pow((LA[i]->y-this->y),2)<pow((this->l/50),2))and(LA[i]->f)) {
+                if ((pow((LA[i]->x - this->x), 2) + pow((LA[i]->y - this->y), 2) < pow((this->l / 50), 2)) and
+                    (LA[i]->f)) {
                     LA[i]->landing = true;
-                }
-                else LA[i]->landing = false;
+                } else LA[i]->landing = false;
             }
 
             if (LA[i]->landing) {
-                for (int j(0); j<K; j++) {
-                    if (i!=j) {
+                for (int j(0); j < K; j++) {
+                    if (i != j) {
+                        LA[j]->landing = false;
                         LA[j]->f = false;
                     }
                 }
-                // cout << "TLA number " << i << " started landing in " << t << endl;
             }
 
-            LA[i]->move(t,a);
-
+            LA[i]->move(t, a);
 
             if (LA[i]->landed) {
-                for (int j(0); j<K; j++) {
-                    if (i!=j) {
+                for (int j(0); j < K; j++) {
+                    if (i != j) {
                         LA[i]->f = true;
                     }
                 }
-                A[counter] = i+1;
-                if (LA[i]->v>450) N[counter] = 'a';
+                A[counter] = i + 1;
+                if (LA[i]->v > 450) N[counter] = 'a';
                 else N[counter] = 'h';
-                counter ++;
+                counter++;
+                if (LA_landing_end[i] < 0.1) LA_landing_end[i] = t;
             }
         }
     }
-    for (int i(0); i<K; i++) {
-        if (not(LA[i]->landed)) cout << LA[i]->x << " " << LA[i]->y << " " << LA[i]->fi << " " << i << endl ;
-    }
-    show(N, A, LA_data, LA_data2, LA_data3);
+    show(N, A, LA_data, LA_data2, LA_data3, LA_landing_end);
 }
