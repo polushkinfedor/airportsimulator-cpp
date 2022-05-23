@@ -101,6 +101,7 @@ void TAirport::show(char* a, int* b, float* L1, float* L2, float* L3, float* LA_
         HEREANSWER << "TLA number " << b[j] << " landed at " << LA_land_end[b[j]-1] << " and its ";
         if (a[j] == 'a') HEREANSWER << "Aircraft";
         else HEREANSWER << "Helicopter";
+        HEREANSWER << endl;
     }
     HEREANSWER.close();
 }
@@ -149,27 +150,18 @@ void TAirport::Do (float t0, float tk) {
             }
 
             if (LA[i]->landing) {
-                for (int j(0); j < K; j++) {
-                    if (i != j) {
-                        LA[j]->landing = false;
-                        LA[j]->f = false;
-                    }
-                }
+                this->f = true;
             }
 
             LA[i]->move(t, a);
 
             if (LA[i]->landed) {
-                for (int j(0); j < K; j++) {
-                    if (i != j) {
-                        LA[i]->f = true;
-                    }
-                }
+                this->f = false;
                 A[counter] = i + 1;
                 if (LA[i]->v > 450) N[counter] = 'a';
                 else N[counter] = 'h';
                 counter++;
-                if (LA_landing_end[i] < 0.1) LA_landing_end[i] = t;
+                LA_landing_end[i] = t;
             }
         }
     }

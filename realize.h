@@ -7,7 +7,7 @@
 
 using namespace std;
 const int K = 16;
-const float dt = 0.1;
+const float dt = 0.01; // максимальная точность, при меньших dt программа работает некоректно
 
 class TAObject {
 public:
